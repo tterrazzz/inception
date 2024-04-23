@@ -1,21 +1,30 @@
 #!/bin/sh
 
-while ! mariadb -h $DB_HOST -u $DB_USER -p$DB_PASSWORD -e ";" ; do
-	echo "[Info] Waiting to connect Database"
-	sleep 1
-	timeout=9
-	if [$timeout -eq 0]; then
-		echo "[Error] Timeout"
-		exit 1
-	fi
-done
-echo "[Info] Database connected"
+#timeout=9
+#while ! mariadb -h $DB_HOST -u $DB_USER -p$DB_PASSWORD -e ";" ; do
+#	echo "[Info] Waiting to connect Database"
+#	sleep 1
+#	timeout=$(($timeout - 1))
+#	if [ $timeout -eq 0 ]; then
+#		echo "[Error] Timeout"
+#		exit 1
+#	fi
+#done
+#echo "[Info] Database connected"
+sleep 10
 
+set -x
 sed -i "s/TO_REPLACE_WP_PORT/$WP_PORT/g" /etc/php8/php-fpm.d/wp.conf
+if [ $? -ne 0 ]; then
+	echo "Failed to replace TO_REPLACE_WP_PORT with $WP_PORT"
+else
+	echo "Replaced TO_REPLACE_WP_PORT with $WP_PORT successfully"
+fi
 
 echo "[Info] Installing wp-cli"
-wget https://raw.githubuser.content.com/wp-cli/builds/gh-pages/phar/wp-cli.phar > /dev/null 2>&1
-chmod +x wp-cli.phar && mv wp-cli.phar /usr/local/bin/wp
+wget https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar -O /tmp/wp-cli.phar #> /dev/null 2>&1
+chmod +x /tmp/wp-cli.phar && mv /tmp/wp-cli.phar /usr/local/bin/wp
+/usr/local/bin/wp --info
 
 if [ ! -f /var/www/html/wp-config.php ]; then
 
@@ -58,4 +67,4 @@ if [ ! -f /var/www/html/wp-config.php ]; then
 fi
 
 echo "[Info] Starting php-fpm"
-php-fpm8 -F -R
+php-fpm8 -F -R -y /etc/php8/php-fpm.d/wp.conf

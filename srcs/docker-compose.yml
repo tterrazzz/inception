@@ -11,7 +11,7 @@ services:
     env_file:
       - .env
     volumes:
-      - mariadb:/var/lib/mysql
+      - mariadb_data:/var/lib/mysql
 
   nginx:
     build: ./requirements/nginx
@@ -27,7 +27,7 @@ services:
     depends_on:
       - wordpress
     volumes:
-      - wordpress:/var/www/html
+      - wordpress_data:/var/www/html
 
   wordpress:
     build: ./requirements/wordpress
@@ -41,24 +41,24 @@ services:
     env_file:
       - .env
     volumes:
-      - wordpress:/var/www/html
+      - wordpress_data:/var/www/html
 
 networks:
   inception:
     driver: bridge
 
 volumes:
-  wordpress:
+  wordpress_data:
     driver: local
     name: wordpress
     driver_opts:
       type: none
-      device: ./requirements/wordpress
+      device: ./requirements/wordpress/volume
       o: bind
-  mariadb:
+  mariadb_data:
     driver: local
     name: mariadb
     driver_opts:
       type: none
-      device: ./requirements/mariadb
+      device: ./requirements/mariadb/volume
       o: bind

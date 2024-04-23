@@ -15,6 +15,7 @@ RUN	adduser -S nginx && addgroup -S nginx
 
 COPY	./conf/wp.conf /etc/php8/php-fpm.d/wp.conf
 COPY	./tools/wp_script.sh /tmp/wp_script.sh
+RUN	rm /etc/php8/php-fpm.d/www.conf
 
 RUN	chmod +x /tmp/wp_script.sh
 
@@ -22,4 +23,4 @@ EXPOSE	9000
 
 WORKDIR	/var/www/html
 
-ENTRYPOINT	[ "sh", "tmp/wp_script.sh" ]
+ENTRYPOINT	[ "sh", "/tmp/wp_script.sh" ]
