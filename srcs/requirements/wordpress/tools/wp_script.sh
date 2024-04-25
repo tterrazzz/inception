@@ -1,18 +1,19 @@
 #!/bin/sh
 
-set -x
+#set -x
 
-timeout=9
-while ! mysqladmin ping -h "$DB_HOST" --user="$DB_USER" --password="$DB_PWD" --silent ";" ; do
-	echo "[Info] Waiting to connect Database"
-	sleep 1
-	timeout=$(($timeout - 1))
-	if [ $timeout -eq 0 ]; then
-		echo "[Error] Timeout"
-		exit 1
-	fi
-done
-echo "[Info] Database connected"
+#timeout=9
+#while ! mysqladmin ping -h "$DB_HOST" --user="$DB_USER" --password="$DB_PWD" --silent ";" ; do
+#	echo "[Info] Waiting to connect Database"
+#	sleep 1
+#	timeout=$(($timeout - 1))
+#	if [ $timeout -eq 0 ]; then
+#		echo "[Error] Timeout"
+#		exit 1
+#	fi
+#done
+#echo "[Info] Database connected"
+sleep 10
 
 set -x
 sed -i "s/TO_REPLACE_WP_PORT/$WP_PORT/g" /etc/php8/php-fpm.d/wp.conf
@@ -40,8 +41,8 @@ chmod +x /tmp/wp-cli.phar && mv /tmp/wp-cli.phar /usr/local/bin/wp
 	mv wordpress/* /var/www/html/
 	rm -rf wordpress wordpress-6.4.tar.gz
 
-	#mv /var/www/html/wp-config-sample.php /var/www/html/wp-config.php
-	rm /var/www/html/wp-config-sample.php
+#	mv /var/www/html/wp-config-sample.php /var/www/html/wp-config.php
+#	rm /var/www/html/wp-config-sample.php
 
 	/usr/local/bin/wp config create --allow-root \
 		--dbname=$DB_NAME \

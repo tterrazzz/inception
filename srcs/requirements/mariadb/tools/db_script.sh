@@ -6,7 +6,7 @@ sed -i "s/TO_REPLACE_MYSQL_PORT/$DB_PORT/g" /etc/mysql/my.cnf
 
 mysql_install_db --user=mysql --datadir=/var/lib/mysql
 
-/usr/bin/mysqld_safe --datadir=/var/lib/mysql
+/usr/bin/mysqld_safe --datadir=/var/lib/mysql &
 
 while ! /usr/bin/mysqladmin ping --silent; do
 	sleep 1
