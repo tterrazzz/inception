@@ -1,19 +1,16 @@
 #!/bin/sh
 
-#set -x
-
-#timeout=9
-#while ! mysqladmin ping -h "$DB_HOST" --user="$DB_USER" --password="$DB_PWD" --silent ";" ; do
-#	echo "[Info] Waiting to connect Database"
-#	sleep 1
-#	timeout=$(($timeout - 1))
-#	if [ $timeout -eq 0 ]; then
-#		echo "[Error] Timeout"
-#		exit 1
-#	fi
-#done
-#echo "[Info] Database connected"
-sleep 10
+timeout=9
+while ! mysqladmin ping -h "$DB_HOST" --user="$DB_USER" --password="$DB_PWD" --silent ; do
+	echo "[Info] Waiting to connect Database"
+	sleep 1
+	timeout=$(($timeout - 1))
+	if [ $timeout -eq 0 ]; then
+		echo "[Error] Timeout"
+		exit 1
+	fi
+done
+echo "[Info] Database connected"
 
 set -x
 sed -i "s/TO_REPLACE_WP_PORT/$WP_PORT/g" /etc/php8/php-fpm.d/wp.conf
@@ -28,7 +25,7 @@ wget https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar -
 chmod +x /tmp/wp-cli.phar && mv /tmp/wp-cli.phar /usr/local/bin/wp
 /usr/local/bin/wp --info
 
-#if [ ! -f /var/www/html/wp-config.php ]; then
+if [ ! -f /var/www/html/wp-config.php ]; then
 
 	chown -R nginx:nginx /var/www/html/
 	find /var/www/html/ -type d -exec chmod 755 {} \;
@@ -40,9 +37,6 @@ chmod +x /tmp/wp-cli.phar && mv /tmp/wp-cli.phar /usr/local/bin/wp
 	tar -xzf wordpress-6.4.tar.gz
 	mv wordpress/* /var/www/html/
 	rm -rf wordpress wordpress-6.4.tar.gz
-
-#	mv /var/www/html/wp-config-sample.php /var/www/html/wp-config.php
-#	rm /var/www/html/wp-config-sample.php
 
 	/usr/local/bin/wp config create --allow-root \
 		--dbname=$DB_NAME \
@@ -71,7 +65,7 @@ chmod +x /tmp/wp-cli.phar && mv /tmp/wp-cli.phar /usr/local/bin/wp
 	find /var/www/html/ -type d -exec chmod 755 {} \;
 	find /var/www/html/ -type f -exec chmod 644 {} \;
 
-#fi
+fi
 
 echo "[Info] Starting php-fpm"
 php-fpm8 -F -R -y /etc/php8/php-fpm.d/wp.conf
