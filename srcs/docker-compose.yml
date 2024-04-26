@@ -53,12 +53,12 @@ volumes:
       #    name: wordpress
     driver_opts:
       type: none
-      device: ./requirements/wordpress/volume
+      device: ~/data/wordpress
       o: bind
   mariadb_data:
     driver: local
       #    name: mariadb
     driver_opts:
       type: none
-      device: ./requirements/mariadb/volume
+      device: ~/data/mariadb
       o: bind

@@ -1,24 +1,25 @@
-DV = docker volume
-DC = docker-compose
-DVLIST =
-DC_FILE = ./srcs/docker-compose.yml
+DC_FILE	= ./srcs/docker-compose.yml
 
-start:
+init_dir:
+	mkdir -p ~/data/mariadb
+	mkdir -p ~/data/wordpress
+
+start: init_dir
 	@echo "Building and starting Docker containers and volumes"
-	$(DC) -f $(DC_FILE) up -d --build
+	docker-compose -f $(DC_FILE) up -d --build
 
 stop:
 	@echo "Shutting down Docker containers"
-	$(DC) -f $(DC_FILE) down
+	docker-compose -f $(DC_FILE) down
 
 fclean:
 	@echo "Removing volumes and built containers"
-	$(DV) rm "$(docker volume ls -q)" && docker system prune -af
+	docker volume rm $$(docker volume ls -q) && docker system prune -af
 
 remove_db:
 	@echo "Removing volumes content"
-	rm -rf ./srcs/requirements/mariadb/volume/* \
-		./srcs/requirements/wordpress/volume/*
+	rm -rf	~data/mariadb \
+		~data/wordpress
 
 re: stop fclean start
 
