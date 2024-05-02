@@ -1,12 +1,12 @@
 #!/bin/sh
 
-if [ ! -f "/etc/redis/redis.conf.bak" ]; then
+if [ ! -f "/etc/redis.conf.bak" ]; then
 	
-	cp /etc/redis/redis.conf /etc/redis/redis-bakup.conf.txt
+	cp /etc/redis.conf /etc/redis-bakup.conf.txt
 
-	sed -i "s/bind 127.0.0.1/#bind 127.0.0.1/g" /etc/redis/redis.conf
-	sed -i "s/# maxmemory <bytes>/maxmemory 2mb/g" /etc/redis/redis.conf
-	sed -i "s/# maxmemory-policy noeviction/maxmemory-policy allkeys-lru/g" /etc/redis/redis.conf
+	sed -i "s/bind 127.0.0.1/#bind 127.0.0.1/g" /etc/redis.conf
+	sed -i "s/# maxmemory <bytes>/maxmemory 2mb/g" /etc/redis.conf
+	sed -i "s/# maxmemory-policy noeviction/maxmemory-policy allkeys-lru/g" /etc/redis.conf
 
 fi
 

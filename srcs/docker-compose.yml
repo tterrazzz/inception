@@ -54,12 +54,11 @@ services:
     networks:
       - inception
     depends_on:
-      - wordpress:
+      - wordpress
     env_file:
       - .env
     volumes:
       - redis_data:/data
-  #redis_insight
 
 networks:
   inception:
@@ -68,14 +67,14 @@ networks:
 volumes:
   wordpress_data:
     driver: local
-      name: wordpress_data
+      #  name: wordpress_data
     driver_opts:
       type: none
       device: ~/data/wordpress
       o: bind
   mariadb_data:
     driver: local
-      name: mariadb_data
+      #  name: mariadb_data
     driver_opts:
       type: none
       device: ~/data/mariadb
@@ -83,10 +82,8 @@ volumes:
   #bonus
   redis_data:
     driver: local
-      name: redis_data
+      #  name: redis_data
     driver_opts:
       type: none
       device: ~/data/redis
       o: bind
-  
-
