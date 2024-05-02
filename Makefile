@@ -20,7 +20,7 @@ fclean:
 remove_db:
 	@echo "Removing volumes content"
 	rm -rf	~/data/mariadb \
-		~/data/wordpress \
+		~/data/wordpress
 		~/data/redis
 
 re: stop fclean start
