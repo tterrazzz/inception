@@ -43,6 +43,23 @@ services:
     volumes:
       - wordpress_data:/var/www/html
 
+  #bonus
+  redis:
+    build: ./requirements/bonus/redis
+    container_name: redis
+    image: redis
+    restart: on-failure
+    ports:
+      - 6379:6379
+    networks:
+      - inception
+    depends_on:
+      - wordpress
+    env_file:
+      - .env
+    volumes:
+      - redis_data:/data
+
 networks:
   inception:
     driver: bridge
@@ -50,15 +67,23 @@ networks:
 volumes:
   wordpress_data:
     driver: local
-      #    name: wordpress
+      #  name: wordpress_data
     driver_opts:
       type: none
       device: ~/data/wordpress
       o: bind
   mariadb_data:
     driver: local
-      #    name: mariadb
+      #  name: mariadb_data
     driver_opts:
       type: none
       device: ~/data/mariadb
+      o: bind
+  #bonus
+  redis_data:
+    driver: local
+      #  name: redis_data
+    driver_opts:
+      type: none
+      device: ~/data/redis
       o: bind

@@ -65,6 +65,18 @@ if [ ! -f /var/www/html/wp-config.php ]; then
 	find /var/www/html/ -type d -exec chmod 755 {} \;
 	find /var/www/html/ -type f -exec chmod 644 {} \;
 
+	#bonus redis
+	
+	/usr/local/bin/wp config set --allow-root \
+		WP_REDIS_HOST redis \
+		WP_REDIS_PORT 6379 --raw \
+		WP_CACHE_KEY_SALT $DB_NAME \
+		WP_REDIS_CLIENT phpredis
+
+	wp plugin install redis-cache --activate --allow-root
+	wp plugin update --all --allow-root
+	wp redis enable --allow-root
+
 fi
 
 echo "[Info] Starting php-fpm"

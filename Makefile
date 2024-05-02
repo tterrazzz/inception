@@ -3,6 +3,7 @@ DC_FILE	= ./srcs/docker-compose.yml
 init_dir:
 	mkdir -p ~/data/mariadb
 	mkdir -p ~/data/wordpress
+	mkdir -p ~/data/redis
 
 start: init_dir
 	@echo "Building and starting Docker containers and volumes"
@@ -18,8 +19,9 @@ fclean:
 
 remove_db:
 	@echo "Removing volumes content"
-	rm -rf	~data/mariadb \
-		~data/wordpress
+	rm -rf	~/data/mariadb \
+		~/data/wordpress \
+		~/data/redis
 
 re: stop fclean start
 
