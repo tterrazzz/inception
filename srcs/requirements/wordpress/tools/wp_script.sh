@@ -60,23 +60,31 @@ if [ ! -f /var/www/html/wp-config.php ]; then
 		--user_pass=$WP_USER_PWD \
 		--role=contributor
 
+
+	# BONUS PART
+	# Redis
+	
+	#ln -s /var/www/html/wp-content/plugins/redis-cache/includes/object-cache.php /var/www/html/wp-content/object-cache.php
+
+	#/usr/local/bin/wp config set --allow-root WP_REDIS_HOST $REDIS_HOST --raw
+	#/usr/local/bin/wp config set --allow-root WP_REDIS_PORT $REDIS_PORT --raw
+	#/usr/local/bin/wp config set --allow-root WP_CACHE_KEY_SALT $DB_NAME --raw
+	#/usr/local/bin/wp config set --allow-root WP_REDIS_CLIENT 'phpredis' --raw
+#		WP_REDIS_PASSWORD $REDIS_PWD \
+	
+	sed -i "62i define ('WP_REDIS_HOST', '$REDIS_HOST');" /var/www/html/wp-config.php
+	sed -i "63i define ('WP_REDIS_PORT', '$REDIS_PORT');" /var/www/html/wp-config.php
+	sed -i "64i define ('WP_CACHE', true);" /var/www/html/wp-config.php
+	sed -i "65i define ('WP_REDIS_CLIENT', 'phpredis');" /var/www/html/wp-config.php
+	sed -i "s/define( 'WP_DEBUG', false );/define( 'WP_DEBUG', true );/g" /var/www/html/wp-config.php
+
+	wp plugin install redis-cache --allow-root --path='/var/www/html/' --activate
 	wp plugin update --all --allow-root --path='/var/www/html/'
+	#wp redis enable --allow-root
+
 	chown -R nginx:nginx /var/www/html/*
 	find /var/www/html/ -type d -exec chmod 755 {} \;
 	find /var/www/html/ -type f -exec chmod 644 {} \;
-
-	#bonus redis
-	
-	/usr/local/bin/wp config set --allow-root \
-		WP_REDIS_HOST redis \
-		WP_REDIS_PORT 6379 --raw \
-		WP_CACHE_KEY_SALT $DB_NAME \
-		WP_REDIS_CLIENT phpredis
-
-	wp plugin install redis-cache --activate --allow-root
-	wp plugin update --all --allow-root
-	wp redis enable --allow-root
-
 fi
 
 echo "[Info] Starting php-fpm"
