@@ -75,6 +75,18 @@ services:
     volumes:
       - wordpress_data:/var/www/html
 
+  adminer:
+    build: ./requirements/bonus/adminer
+    container_name: adminer
+    image: adminer
+    restart: on-failure
+    depends_on:
+      - mariadb
+    env_file:
+      - .env
+    networks:
+      - inception
+
 networks:
   inception:
     driver: bridge
