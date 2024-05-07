@@ -73,6 +73,7 @@ if [ ! -f /var/www/html/wp-config.php ]; then
 	sed -i "s/define( 'WP_DEBUG', false );/define( 'WP_DEBUG', true );/g" /var/www/html/wp-config.php
 	sed -i "66i define ('WP_DEBUG_LOG', true);" /var/www/html/wp-config.php
 	sed -i "67i define ('WP_DEBUG_DISPLAY', false);" /var/www/html/wp-config.php
+	sed -i "68i define ('FS_METHOD', 'direct');" /var/www/html/wp-config.php
 
 	wp plugin install redis-cache --allow-root --path='/var/www/html/' --activate
 	wp plugin update --all --allow-root --path='/var/www/html/'
