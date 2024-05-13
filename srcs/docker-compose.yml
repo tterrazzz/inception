@@ -87,6 +87,18 @@ services:
     networks:
       - inception
 
+  uptime-kuma:
+    build: ./requirements/bonus/uptime-kuma
+    container_name: uptime-kuma
+    image: uptime-kuma
+    restart: always
+    ports:
+      - "127.0.0.1:3001:3001"
+    networks:
+      - inception
+    volumes:
+      - uptime-kuma_data:/apps
+
 networks:
   inception:
     driver: bridge
@@ -114,3 +126,10 @@ volumes:
       type: none
       device: ~/data/redis
       o: bind
+  uptime-kuma_data:
+    driver: local
+    driver_opts:
+      type: none
+      device: ~/data/uptime-kuma
+      o: bind
+
