@@ -1,7 +1,18 @@
 #!/bin/sh
 
-git clone https://github.com/louislam/uptime-kuma.git
-cd uptime-kuma
-npm run setup
+if [ ! -d /apps/uptime-kuma/ ]; then
 
-pm2-runtime start server/server.js --name uptime-kuma
+	git clone https://github.com/louislam/uptime-kuma.git
+	cd uptime-kuma
+	npm run setup
+	node server/server.js
+
+else
+	cd uptime-kuma
+	node server/server.js
+
+fi
+
+#pm2-runtime start server/server.js --name uptime-kuma
+
+

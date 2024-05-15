@@ -16,6 +16,4 @@ COPY	./tools/nginx_script.sh /tmp/nginx_script.sh
 
 RUN	chmod +x /tmp/nginx_script.sh
 
-EXPOSE	443
-
 CMD [ "sh", "/tmp/nginx_script.sh" ]
