@@ -5,6 +5,7 @@ init_dir:
 	mkdir -p ~/data/wordpress
 	mkdir -p ~/data/redis
 	mkdir -p ~/data/uptime-kuma
+	mkdir -p ~/data/static-website
 
 start: init_dir
 	@echo "Building and starting Docker containers and volumes"
@@ -23,7 +24,8 @@ remove_db:
 	rm -rf	~/data/mariadb \
 		~/data/wordpress \
 		~/data/redis \
-		~/data/uptime-kuma
+		~/data/uptime-kuma \
+		~/data/static-website
 
 re: stop fclean start
 
