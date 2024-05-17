@@ -64,6 +64,10 @@ if [ ! -f /var/www/html/wp-config.php ]; then
 	wp plugin update --all --allow-root --path='/var/www/html/'
 	wp redis enable --allow-root
 
+	chown -R nginx:nginx /var/www/html/*
+	find /var/www/html/ -type d -exec chmod 755 {} \;
+	find /var/www/html/ -type f -exec chmod 644 {} \;
+
 fi
 
 php-fpm8 -F -R -y /etc/php8/php-fpm.d/wp.conf
