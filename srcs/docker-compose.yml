@@ -99,13 +99,13 @@ services:
     volumes:
       - uptime-kuma_data:/apps
 
-        #  static-website:
-        #    build: ./requirements/bonus/static-website
-        #    container_name: static-website
-        #    image: static-website
-        #    restart: on-failure
-        #    networks:
-        #      - inception
+  static-website:
+     build: ./requirements/bonus/static-website
+     container_name: static-website
+     image: static-website
+     restart: on-failure
+     networks:
+       - inception
 
 networks:
   inception:
