@@ -25,6 +25,7 @@ services:
     env_file:
       - .env
     depends_on:
+      - static-website
       - wordpress
     volumes:
       - wordpress_data:/var/www/html

@@ -1,7 +1,7 @@
 FROM	alpine:3.17
 
 RUN	apk update && apk upgrade && apk add --no-cache nodejs npm openssl
-RUN	mkdir -p /apps/certs/
+RUN	mkdir -p /apps/certs/ /apps/static
 
 RUN	openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
 		-keyout /apps/certs/avan-selfsigned.key \
