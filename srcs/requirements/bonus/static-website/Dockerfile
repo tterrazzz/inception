@@ -1,18 +1,13 @@
 FROM	alpine:3.17
 
-RUN	apk update && apk upgrade && apk add --no-cache nodejs npm openssl
-RUN	mkdir -p /apps/certs/ /apps/static
+RUN	apk update && apk upgrade && apk add --no-cache apache2
+RUN	mkdir -p /var/www/localhost/htdocs/static
 
-RUN	openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
-		-keyout /apps/certs/avan-selfsigned.key \
-		-out /apps/certs/avan-selfsigned.pem \
-		-subj "/C=FR/ST=PACA/L=Nice/O=42/OU=avan/CN=avan.42.fr"
+COPY	./html /var/www/localhost/htdocs/static
 
-WORKDIR /apps
+RUN	echo "ServerName localhost" >> /etc/apache2/httpd.conf
 
-COPY	./html /apps/static
-COPY	./tools/server.js /apps
+EXPOSE	80
 
-EXPOSE	8082
+ENTRYPOINT	[ "httpd", "-D", "FOREGROUND" ]
 
-ENTRYPOINT	[ "node", "server.js" ]
