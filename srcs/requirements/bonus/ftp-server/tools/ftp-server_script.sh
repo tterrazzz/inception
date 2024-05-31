@@ -3,6 +3,7 @@
 if [ ! -f "/etc/vsftpd/vsftpd.conf.bak" ]; then
 
 	mkdir -p /var/www/html
+	mkdir -p /ftp
 
 	mv /tmp/vsftpd.chroot_list /etc/vsftpd.chroot_list
 	cp /etc/vsftpd/vsftpd.conf /etc/vsftpd/vsftpd.conf.bak
